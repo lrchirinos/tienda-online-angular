@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { ListadoProductoComponent } from './listado-producto/listado-producto.component'; 
+import { ListadoProductoComponent } from './listado-producto/listado-producto.component';
+import { RouterOutlet } from "@angular/router"; 
 
 
 @Component({
   selector: 'app-root',
   standalone:true,
-  imports: [ListadoProductoComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
