@@ -12,7 +12,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
   styleUrl: './formulario.component.css'
 })
 export class FormularioComponent {
-  productoId: number | null = null;
+  llaveProducto: string | null = null;
   descripcionInput: string = '';
   precioInput: number | null = null;
   constructor(
@@ -23,12 +23,12 @@ export class FormularioComponent {
 
   ngOnInit(){
     //verificamos producto existente
-    const id = this.route.snapshot.paramMap.get('id');
-    if(id){
-      const producto = this.productoService.getProductoById(Number(id));
+    const llave = this.route.snapshot.paramMap.get('llave');
+    if(llave){
+      const producto = this.productoService.getProductoByLlave(llave);
       if(producto){
         //si encontramos el producto lo cargamos en el formulario
-        this.productoId= producto.id;
+        this.llaveProducto = llave;
         this.descripcionInput = producto.descripcion;
         this.precioInput = producto.precio;
       }
@@ -42,9 +42,11 @@ export class FormularioComponent {
       console.log('Debe ingresar una descripción y un precio válidos');
       return;
     }
-    const producto = new Producto(this.productoId, this.descripcionInput, this.precioInput);
+    const producto = new Producto(this.descripcionInput, this.precioInput);
+
     // Agregamos el nuevo producto usando el servicio
-    this.productoService.guardarProducto(producto);
+    this.productoService.guardarProducto(producto, this.llaveProducto);
+
     // Limpia los campos de entrada después de agregar el producto
     this.limpiarFormulario();
     //para redirigir al inicio
@@ -57,15 +59,15 @@ export class FormularioComponent {
   }
 
   eliminarProducto(){
-    if(this.productoId!==null){
-      this.productoService.eliminarProducto(this.productoId);
+    if(this.llaveProducto!==null){
+    this.productoService.eliminarProducto(this.llaveProducto);
       this.limpiarFormulario();
       this.router.navigate(['/']);
     }
   }
 
   limpiarFormulario(){
-    this.productoId = null;
+    this.llaveProducto = null;
     this.descripcionInput = '';
     this.precioInput = null;
   }
