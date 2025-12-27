@@ -1,15 +1,22 @@
 import { Component } from '@angular/core';
-import { ListadoProductoComponent } from './listado-producto/listado-producto.component';
-import { RouterOutlet } from "@angular/router"; 
-
-
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { LoginService } from './login.service';
 @Component({
-  selector: 'app-root',
-  standalone:true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+selector: 'app-root',
+standalone: true,
+imports: [RouterOutlet, RouterModule],
+templateUrl: './app.component.html',
+styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'tienda-online';
+titulo = 'Tienda Online';
+constructor(private loginService: LoginService) {}
+// Método que verifica si el usuario está autenticado
+isAutenticado() {
+return this.loginService.isAutenticado();
+}
+// Método para cerrar sesión
+salir() {
+this.loginService.logout();
+}
 }
